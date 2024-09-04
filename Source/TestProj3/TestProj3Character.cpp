@@ -39,10 +39,16 @@ ATestProj3Character::ATestProj3Character()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
+	CameraBoom->SetupAttachment(GetMesh(), FName("head"));
+	CameraBoom->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
+	CameraBoom->TargetArmLength = 400.0f;
+	CameraBoom->bEnableCameraLag = true;
+	CameraBoom->CameraLagSpeed = 3.0f;
 
 	// Create a follow camera
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCamera->SetupAttachment(GetMesh(), FName("head")); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	FirstPersonCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	//FirstPersonCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
