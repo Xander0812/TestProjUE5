@@ -22,13 +22,12 @@ ATestProj3Character::ATestProj3Character()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
 	// Don't rotate when the controller rotates. Let that just affect the camera.
-	bUseControllerRotationPitch = false;
+	/*bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	bUseControllerRotationRoll = false;*/
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
@@ -40,11 +39,11 @@ ATestProj3Character::ATestProj3Character()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
-	CameraBoom->SetupAttachment(GetMesh(), FName("head"));
-	CameraBoom->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
+	CameraBoom->SetupAttachment(GetRootComponent());
+	/*CameraBoom->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 	CameraBoom->TargetArmLength = 400.0f;
 	CameraBoom->bEnableCameraLag = true;
-	CameraBoom->CameraLagSpeed = 3.0f;
+	CameraBoom->CameraLagSpeed = 3.0f;*/
 
 	// Create a follow camera
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -98,6 +97,8 @@ void ATestProj3Character::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	//UE_LOG(LogTemp, Display, TEXT("OrientRotationToMovement:"), GetCharacterMovement()->bOrientRotationToMovement);
 
 	if (Controller != nullptr)
 	{
